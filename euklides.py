@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Optional
 import _helpers
 
 
@@ -20,14 +20,13 @@ def nwd_mod_iterative(a: int, b: int) -> int:
 
 
 def nwd_minus_recursive(a: int, b: int) -> int:
-    if a == b:
-        return a
-
     if a > b:
         return nwd_minus_recursive(a - b, b)
 
     if a < b:
         return nwd_minus_recursive(a, b - a)
+
+    return a
 
 
 def nwd_minus_iterative(a: int, b: int) -> int:
@@ -52,16 +51,8 @@ def _parse_input(number) -> int:
         raise _helpers.ValidationError("Podane wartości muszą być liczbami naturalnymi większymi od zera. Od początku!")
 
 
-def run():
-    a = None
-    b = None
-
-    print("Oblicznie najmniejszej wspólnej wielokrotności (NWW) dwóch liczb naturalnych a i b:")
-
-    def nwd_method_dummy(a: int, b: int) -> int:
-        raise RuntimeError("NWD method not set")
-
-    nwd_method = nwd_method_dummy
+def select_algorithm_menu() -> Optional[Callable[[int, int], int]]:
+    nwd_method = None
 
     def set_nwd_mod_recursive():
         nonlocal nwd_method
@@ -86,7 +77,19 @@ def run():
         _helpers.MenuItem('Odejmowanie iteracyjnie', set_nwd_minus_iterative),
     ], redraw=False)
 
-    if nwd_method == nwd_method_dummy:
+    return nwd_method
+
+
+def run():
+    a = None
+    b = None
+
+    print("Oblicznie najmniejszej wspólnej wielokrotności (NWW) dwóch liczb naturalnych a i b:")
+
+    nwd_method = select_algorithm_menu()
+
+    if nwd_method is None:
+        print("Nie wybrano metody obliczeń.")
         return
 
     while a is None or b is None:
@@ -98,6 +101,7 @@ def run():
             b = None
             print(e.message)
 
+    print("Największy wspólny dzielnik dla {a} i {b} wynosi {result}".format(a=a, b=b, result=nwd_method(a, b)))
     print("Najmniejsza wspólna wielokrotność dla {a} i {b} wynosi {result}\n".format(
         a=a,
         b=b,
