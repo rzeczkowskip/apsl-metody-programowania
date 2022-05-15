@@ -196,7 +196,7 @@ def select_algorithm_menu() -> Optional[Callable[[List[int], Debug], List[int]]]
     return selected_method
 
 
-def run():
+def run() -> None:
     max_number = None
     seq_items_count = None
 
