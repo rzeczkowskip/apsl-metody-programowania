@@ -1,4 +1,22 @@
-from typing import Callable, List
+from typing import Callable, List, Optional
+
+
+class Validator:
+    @staticmethod
+    def ValidateInt(number, _min: Optional[int]) -> int:
+        try:
+            number = int(number)
+
+            if _min is not None and number < _min:
+                raise ValueError
+
+            return number
+        except ValueError:
+            raise ValidationError(
+                "Podane wartości muszą być liczbami naturalnymi{greater_than}".format(
+                    greater_than=" większymi od {min}. Od początku!".format(min=_min) if _min else ""
+                )
+            )
 
 
 class MenuLabel:
