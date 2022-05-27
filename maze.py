@@ -233,6 +233,8 @@ def run():
     maze.print(results[0])
     maze_helpers.pretty_print_steps(results[0])
 
+    input('Naciśnij enter, aby kontynuować')
+
     if result_count > 1:
         maze_helpers.ask_yes_no(f"Czy chcesz zobaczyć pozostałe rozwiązania {result_count - 1}?")
         for i, steps in enumerate(results[1:]):
